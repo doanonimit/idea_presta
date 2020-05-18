@@ -125,7 +125,6 @@ class Ps_Wirepayment extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE,
-            Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE,
                 Tools::getValue(self::FLAG_DISPLAY_PAYMENT_INVITE));
             Configuration::updateValue(self::FLAG_DISPLAY_NEXT_STEP_INFO,
                 Tools::getValue(self::FLAG_DISPLAY_NEXT_STEP_INFO));
