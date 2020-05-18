@@ -214,9 +214,7 @@ class Ps_Wirepayment extends PaymentModule
         if (!$this->active || (!Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE) && !Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO))) {
             return;
         }
-//VDESTRING
-var_dump($params);
-exit();
+        
         $state = $params['order']->getCurrentState();
         if (
             in_array(
@@ -256,7 +254,13 @@ exit();
                 'reference' => $params['order']->reference,
                 'contact_url' => $this->context->link->getPageLink('contact', true),
                 'showPaymentInvite' => Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE) ? 'show' : 'hide',
-                'showPaymentNextStep' => Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO) ? 'show' : 'hide'
+                'showPaymentNextStep' => Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO) ? 'show' : 'hide',
+                'contact_mail' => Configuration::get('PS_SHOP_MAIL'),
+                'contact_phone' => Configuration::get('PS_SHOP_PHONE'),
+                'name' => $params['cookie']->customer_lastname.' '.$params['cookie']->customer_firstname,
+                'id_order' => $params['order']->id,
+                'ref' => $params['order']->reference
+
             ));
         } else {
             $this->smarty->assign(
