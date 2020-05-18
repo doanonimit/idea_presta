@@ -33,6 +33,7 @@ if (!defined('_PS_VERSION_')) {
 class Ps_Wirepayment extends PaymentModule
 {
     const FLAG_DISPLAY_PAYMENT_INVITE = 'BANK_WIRE_PAYMENT_INVITE';
+    const FLAG_DISPLAY_NEXT_STEP_INFO = 'BANK_WIRE_NEXT_STEP_INFO';
 
     protected $_html = '';
     protected $_postErrors = array();
@@ -92,6 +93,7 @@ class Ps_Wirepayment extends PaymentModule
     public function install()
     {
         Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE, true);
+        Configuration::updateValue(self::FLAG_DISPLAY_NEXT_STEP_INFO, false);
         if (!parent::install() || !$this->registerHook('paymentReturn') || !$this->registerHook('paymentOptions')) {
             return false;
         }
@@ -112,6 +114,7 @@ class Ps_Wirepayment extends PaymentModule
                 || !Configuration::deleteByName('BANK_WIRE_ADDRESS')
                 || !Configuration::deleteByName('BANK_WIRE_RESERVATION_DAYS')
                 || !Configuration::deleteByName(self::FLAG_DISPLAY_PAYMENT_INVITE)
+                || !Configuration::deleteByName(self::FLAG_DISPLAY_NEXT_STEP_INFO)
                 || !parent::uninstall()) {
             return false;
         }
@@ -122,7 +125,10 @@ class Ps_Wirepayment extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE,
+            Configuration::updateValue(self::FLAG_DISPLAY_PAYMENT_INVITE,
                 Tools::getValue(self::FLAG_DISPLAY_PAYMENT_INVITE));
+            Configuration::updateValue(self::FLAG_DISPLAY_NEXT_STEP_INFO,
+                Tools::getValue(self::FLAG_DISPLAY_NEXT_STEP_INFO));
 
             if (!Tools::getValue('BANK_WIRE_DETAILS')) {
                 $this->_postErrors[] = $this->trans('Account details are required.', array(), 'Modules.Wirepayment.Admin');
@@ -349,6 +355,25 @@ class Ps_Wirepayment extends PaymentModule
                             )
                         ),
                     ),
+                    array(
+                        'type' => 'switch',
+                        'label' => $this->trans('Display additional info about next step to pay in the order confirmation page', array(), 'Modules.Wirepayment.Admin'),
+                        'name' => self::FLAG_DISPLAY_PAYMENT_INVITE,
+                        'is_bool' => false,
+//                        'hint' => $this->trans('Your country\'s legislation may require you to send the invitation to pay by email only. Disabling the option will hide the invitation on the confirmation page.', array(), 'Modules.Wirepayment.Admin'),
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => true,
+                                'label' => $this->trans('Enabled', array(), 'Admin.Global'),
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => false,
+                                'label' => $this->trans('Disabled', array(), 'Admin.Global'),
+                            )
+                        ),
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->trans('Save', array(), 'Admin.Actions'),
@@ -396,7 +421,9 @@ class Ps_Wirepayment extends PaymentModule
             'BANK_WIRE_RESERVATION_DAYS' => Tools::getValue('BANK_WIRE_RESERVATION_DAYS', Configuration::get('BANK_WIRE_RESERVATION_DAYS')),
             'BANK_WIRE_CUSTOM_TEXT' => $custom_text,
             self::FLAG_DISPLAY_PAYMENT_INVITE => Tools::getValue(self::FLAG_DISPLAY_PAYMENT_INVITE,
-                Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE))
+                Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE)),
+            self::FLAG_DISPLAY_NEXT_STEP_INFO => Tools::getValue(self::FLAG_DISPLAY_NEXT_STEP_INFO,
+                Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO))
         );
     }
 
