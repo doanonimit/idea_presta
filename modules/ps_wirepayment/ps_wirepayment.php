@@ -214,7 +214,7 @@ class Ps_Wirepayment extends PaymentModule
         if (!$this->active || (!Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE) && !Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO))) {
             return;
         }
-        
+
         $state = $params['order']->getCurrentState();
         if (
             in_array(
@@ -365,7 +365,7 @@ class Ps_Wirepayment extends PaymentModule
                     array(
                         'type' => 'switch',
                         'label' => $this->trans('Display additional info about next step to pay in the order confirmation page', array(), 'Modules.Wirepayment.Admin'),
-                        'name' => self::FLAG_DISPLAY_PAYMENT_INVITE,
+                        'name' => self::FLAG_DISPLAY_NEXT_STEP_INFO,
                         'is_bool' => false,
 //                        'hint' => $this->trans('Your country\'s legislation may require you to send the invitation to pay by email only. Disabling the option will hide the invitation on the confirmation page.', array(), 'Modules.Wirepayment.Admin'),
                         'values' => array(
