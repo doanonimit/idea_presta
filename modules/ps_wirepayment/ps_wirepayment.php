@@ -257,7 +257,6 @@ class Ps_Wirepayment extends PaymentModule
                 'showPaymentNextStep' => Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO) ? 'show' : 'hide',
                 'contact_mail' => Configuration::get('PS_SHOP_EMAIL'),
                 'contact_phone' => Configuration::get('PS_SHOP_PHONE'),
-                'name' => $params['cookie']->customer_lastname.' '.$params['cookie']->customer_firstname,
                 'id_order' => $params['order']->id,
                 'ref' => $params['order']->reference
 
