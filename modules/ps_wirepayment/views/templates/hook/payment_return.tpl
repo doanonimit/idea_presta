@@ -42,7 +42,7 @@
     {/if}
     {if $showPaymentNextStep == 'show'}
         <p>
-            {l s='Уважаемый [name], спасибо за ваш заказ №[id_order] - [ref].' sprintf=['[name]' => $customer_name, '[id_order]' => $id_order, '[ref]' => $reference] d='Modules.Wirepayment.Shop'}
+            {l s='Уважаемый [name], спасибо за ваш заказ №[id_order] - [ref].' sprintf=['[name]' => "{$customer.lastname} {$customer.firstname}", '[id_order]' => $id_order, '[ref]' => $reference] d='Modules.Wirepayment.Shop'}
             {l s='С Вами в ближайшее время свяжется наш менеджер для подтверждения заказа.' d='Modules.Wirepayment.Shop'}
             {l s='Если вам кажется, что мы потеряли Ваш заказ, позвоните нам по телефону [phone] или напишите на почту [mail].' sprintf=['[phone]' => $contact_phone, '[mail]' => "<a href='mailto:{$contact_mail}'>{$contact_mail}</a>" ] d='Modules.Wirepayment.Shop'}
             {l s='Обязательно укажите в теме письма о каком заказе идет речь, чтобы мы могли быстрее Вам помочь!'}
