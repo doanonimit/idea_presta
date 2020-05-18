@@ -211,10 +211,12 @@ class Ps_Wirepayment extends PaymentModule
 
     public function hookPaymentReturn($params)
     {
-        if (!$this->active || !Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE)) {
+        if (!$this->active || (!Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE) && !Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO))) {
             return;
         }
-
+//VDESTRING
+var_dump($params);
+exit();
         $state = $params['order']->getCurrentState();
         if (
             in_array(
@@ -252,7 +254,9 @@ class Ps_Wirepayment extends PaymentModule
                 'bankwireOwner' => $bankwireOwner,
                 'status' => 'ok',
                 'reference' => $params['order']->reference,
-                'contact_url' => $this->context->link->getPageLink('contact', true)
+                'contact_url' => $this->context->link->getPageLink('contact', true),
+                'showPaymentInvite' => Configuration::get(self::FLAG_DISPLAY_PAYMENT_INVITE) ? 'show' : 'hide',
+                'showPaymentNextStep' => Configuration::get(self::FLAG_DISPLAY_NEXT_STEP_INFO) ? 'show' : 'hide'
             ));
         } else {
             $this->smarty->assign(
